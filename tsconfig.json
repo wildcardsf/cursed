@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["es2020", "esnext", "deno.ns"],
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "target": "es2020",
+    "plugins": [
+      {
+        "name": "typescript-deno-plugin",
+        "enable": true,
+        "importmap": "import_map.json"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts*"
+  ]
+}

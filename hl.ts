@@ -36,14 +36,21 @@ enum Color {
   brightWhite,
 }
 
-export const addChar = (z: number): number => ll.addch(z);
-export const addCharCodesWithSize = (a1: number[], z: number): number => ll.addchnstr(new Uint8Array(a1), z);
-export const addCharCodes = (z: number[]): number => ll.addchstr(new Uint8Array(z));
-export const addStringWithSize = (a1: string, z: number): number => ll.addnstr(cstring(a1), z);
-export const addString = (z: string): number => ll.addstr(cstring(z));
-export const disableAttribute = (z: number): number => ll.attroff(z);
-export const enableAttribute = (z: number): number => ll.attron(z);
-export const setAttribute = (z: number): number => ll.attrset(z);
+export type StringOptions = {
+  x?: number,
+  y?: number,
+  length?: number,
+}
+
+export const addChar = (char: string): number => ll.addch(char.charCodeAt(0));
+export const addCharCode = (char: number): number => ll.addch(char);
+export const addCharCodesWithLength = (codes: number[], length: number): number => ll.addchnstr(new Uint8Array(codes), length);
+export const addCharCodes = (codes: number[]): number => ll.addchstr(new Uint8Array(codes));
+export const addStringWithLength = (str: string, length: number): number => ll.addnstr(cstring(str), length);
+export const addString = (str: string): number => ll.addstr(cstring(str));
+export const disableAttribute = (attr: number): number => ll.attroff(attr);
+export const enableAttribute = (attr: number): number => ll.attron(attr);
+export const setAttribute = (attr: number): number => ll.attrset(attr);
 export const attr_get = (a1: number, a2: number, z: any): number => ll.attr_get(a1, a2, z);
 export const attr_off = (a1: number, z: any): number => ll.attr_off(a1, z);
 export const attr_on = (a1: number, z: any): number => ll.attr_on(a1, z);
@@ -81,56 +88,56 @@ export const doUpdate = (): number => ll.doupdate();
 export const echo = (): number => ll.echo();
 export const echoChar = (z: number): number => ll.echochar(z);
 export const erase = (): number => ll.erase();
-export const endwin = (): number => ll.endwin();
+export const end = (): number => ll.endwin();
 export const eraseChar = (): string => String.fromCharCode(ll.erasechar());
 export const filter = (): any => ll.filter();
 export const flash = (): number => ll.flash();
 export const flushinp = (): number => ll.flushinp();
-export const getInputChar = (): number => ll.getch();
-export const getInputStringWithSize = (a1: string, z: number): number => ll.getnstr(cstring(a1), z);
-export const getInputString = (z: string): number => ll.getstr(cstring(z));
+export const readInputChar = (): number => ll.getch();
+export const readInputStringWithLength = (a1: string, z: number): number => ll.getnstr(cstring(a1), z);
+export const readInputString = (z: string): number => ll.getstr(cstring(z));
 export const getWindow = (filep: FILE): WINDOW => ll.getwin(filep);
 export const halfDelay = (t: number): number => ll.halfdelay(t);
-export const has_colors = (): boolean => ll.has_colors() > -1;
+export const hasColors = (): boolean => ll.has_colors() > -1;
 export const has_ic = (): boolean => ll.has_ic() > -1;
 export const has_il = (): boolean => ll.has_il() > -1;
 export const hline = (a1: number, z: number): number => ll.hline(a1, z);
 export const char = (): number => ll.inch();
-export const getCharCodesWithSize = (a1: number[], z: number): number => ll.inchnstr(new Uint8Array(a1), z);
+export const getCharCodesWithLength = (a1: number[], z: number): number => ll.inchnstr(new Uint8Array(a1), z);
 export const getCharCodes = (z: number[]): number => ll.inchstr(new Uint8Array(z));
 export const initScreen = (): WINDOW => ll.initscr();
 export const init_color = (color: number, r: number, g: number, b: number): number => ll.init_color(color, r, g, b);
 export const init_pair = (pair: number, f: number, b: number): number => ll.init_pair(pair, f, b);
-export const getStringWithSize = (a1: string, z: number): number => ll.innstr(cstring(a1), z);
+export const getStringWithLength = (a1: string, z: number): number => ll.innstr(cstring(a1), z);
 export const insertChar = (z: number): number => ll.insch(z);
 export const insertDeleteLine = (z: number): number => ll.insdelln(z);
 export const insertLine = (): number => ll.insertln();
-export const insertStringWithSize = (a1: string, z: number): number => ll.insnstr(cstring(a1), z);
+export const insertStringWithLength = (a1: string, z: number): number => ll.insnstr(cstring(a1), z);
 export const insertString = (z: string): number => ll.insstr(cstring(z));
 export const copyString = (z: string): number => ll.instr(cstring(z));
-export const isEndwin = (): boolean => ll.isendwin() > -1;
+export const didEnd = (): boolean => ll.isendwin() > -1;
 export const keyName = (c: number): string => ll.keyname(c).getCString();
 export const killChar = (): string => String.fromCharCode(ll.killchar());
 export const longName = (): string => ll.longname().getCString();
 export const move = (a1: number, z: number): number => ll.move(a1, z);
 export const addCharAt = (a1: number, a2: number, z: number): number => ll.mvaddch(a1, a2, z);
-export const addCharCodesWithSizeAt = (a1: number, a2: number, a3: number[], z: number): number => ll.mvaddchnstr(a1, a2, new Uint8Array(a3), z);
+export const addCharCodesWithLengthAt = (a1: number, a2: number, a3: number[], z: number): number => ll.mvaddchnstr(a1, a2, new Uint8Array(a3), z);
 export const addCharCodesAt = (a1: number, a2: number, z: number[]): number => ll.mvaddchstr(a1, a2, new Uint8Array(z));
-export const addStringWithSizeAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvaddnstr(a1, a2, cstring(a3), z);
+export const addStringWithLengthAt = (str: string, x: number, y: number, length: number): number => ll.mvaddnstr(y, x, cstring(str), length);
 export const addStringAt = (a1: number, a2: number, z: string): number => ll.mvaddstr(a1, a2, cstring(z));
 export const changeAttributeAt = (a1: number, a2: number, a3: number, a4: number, a5: number, z: any): number => ll.mvchgat(a1, a2, a3, a4, a5, z);
 export const curAt = (yold: number, xold: number, ynew: number, xnew: number): number => ll.mvcur(yold, xold, ynew, xnew);
 export const deleteCharAt = (a1: number, z: number): number => ll.mvdelch(a1, z);
-export const getInputCharAt = (a1: number, z: number): number => ll.mvgetch(a1, z);
-export const getInputStringWithSizeAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvgetnstr(a1, a2, cstring(a3), z);
-export const getInputStringAt = (a1: number, a2: number, z: string): number => ll.mvgetstr(a1, a2, cstring(z));
+export const readInputCharAt = (a1: number, z: number): number => ll.mvgetch(a1, z);
+export const readInputStringWithLengthAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvgetnstr(a1, a2, cstring(a3), z);
+export const readInputStringAt = (a1: number, a2: number, z: string): number => ll.mvgetstr(a1, a2, cstring(z));
 export const hlineAt = (a1: number, a2: number, a3: number, z: number): number => ll.mvhline(a1, a2, a3, z);
-export const charAt = (a1: number, z: number): number => ll.mvinch(a1, z);
-export const getCharCodesWithSizeAt = (a1: number, a2: number, a3: number[], z: number): number => ll.mvinchnstr(a1, a2, new Uint8Array(a3), z);
+export const charAt = (x: number, y: number): string => String.fromCharCode(ll.mvinch(y, x));
+export const getCharCodesWithLengthAt = (a1: number, a2: number, a3: number[], z: number): number => ll.mvinchnstr(a1, a2, new Uint8Array(a3), z);
 export const getCharCodesAt = (a1: number, a2: number, z: number[]): number => ll.mvinchstr(a1, a2, new Uint8Array(z));
-export const getStringWithSizeAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvinnstr(a1, a2, cstring(a3), z);
+export const getStringWithLengthAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvinnstr(a1, a2, cstring(a3), z);
 export const insertCharAt = (a1: number, a2: number, z: number): number => ll.mvinsch(a1, a2, z);
-export const insertStringWithSizeAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvinsnstr(a1, a2, cstring(a3), z);
+export const insertStringWithLengthAt = (a1: number, a2: number, a3: string, z: number): number => ll.mvinsnstr(a1, a2, cstring(a3), z);
 export const insertStringAt = (a1: number, a2: number, z: string): number => ll.mvinsstr(a1, a2, cstring(z));
 export const getStringAt = (a1: number, a2: number, z: string): number => ll.mvinstr(a1, a2, cstring(z));
 export const _nc_scroll_optimize = (): any => ll._nc_scroll_optimize();
@@ -185,14 +192,14 @@ export const termattrs = (): number => ll.termattrs();
 export const termname = (): string => ll.termname().getCString();
 export const timeout = (z: number): any => ll.timeout(z);
 export const typeahead = (fd: number): number => ll.typeahead(fd);
-export const ungetInputch = (ch: number): number => ll.ungetch(ch);
+export const unreadInputch = (ch: number): number => ll.ungetch(ch);
 export const use_env = (f: boolean): any => ll.use_env(Number(f));
 export const vidattr = (newmode: number): number => ll.vidattr(newmode);
 export const vidputs = (newmode: number, PLACEHOLDER: any): number => ll.vidputs(newmode, PLACEHOLDER);
 export const vline = (a1: number, z: number): number => ll.vline(a1, z);
-export const tigetInputflag = (str: string): number => ll.tigetflag(cstring(str));
-export const tigetInputnum = (str: string): number => ll.tigetnum(cstring(str));
-export const tigetInputString = (str: string): string => ll.tigetstr(cstring(str)).getCString();
+export const tireadInputflag = (str: string): number => ll.tigetflag(cstring(str));
+export const tireadInputnum = (str: string): number => ll.tigetnum(cstring(str));
+export const tireadInputString = (str: string): string => ll.tigetstr(cstring(str)).getCString();
 export const putp = (string: string): number => ll.putp(cstring(string));
 export const tparm = (string: string): string => ll.tparm(cstring(string)).getCString();
 export const is_term_resized = (ToLines: number, ToCols: number): boolean => ll.is_term_resized(ToLines, ToCols) > -1;
@@ -206,13 +213,13 @@ export const resize_term = (ToLines: number, ToCols: number): number => ll.resiz
 export const resizeterm = (ToLines: number, ToCols: number): number => ll.resizeterm(ToLines, ToCols);
 export const set_escdelay = (value: number): number => ll.set_escdelay(value);
 export const set_tabsize = (value: number): number => ll.set_tabsize(value);
-export const use_default_colors = (): number => ll.use_default_colors();
+export const useDefaultColors = (): number => ll.use_default_colors();
 export const use_extended_names = (flag: boolean): number => ll.use_extended_names(Number(flag));
 export const use_legacy_coding = (level: number): number => ll.use_legacy_coding(level);
 export const use_screen = (screen: SCREEN, func: any, data: any): number => ll.use_screen(screen, func, data);
 export const nofilter = (): any => ll.nofilter();
-export const getInputmouse = (aevent: MEVENT): number => ll.getmouse(aevent);
-export const ungetInputmouse = (aevent: MEVENT): number => ll.ungetmouse(aevent);
+export const readInputmouse = (aevent: MEVENT): number => ll.getmouse(aevent);
+export const unreadInputmouse = (aevent: MEVENT): number => ll.ungetmouse(aevent);
 export const mousemask = (newmask: number, oldmask: number): number => ll.mousemask(newmask, oldmask);
 export const mouseinterval = (maxclick: number): number => ll.mouseinterval(maxclick);
 export const mouse_trafo = (a1: number, a2: number, z: boolean): boolean => ll.mouse_trafo(a1, a2, Number(z)) > -1;
@@ -249,23 +256,23 @@ export const window = {
   meta: (win: WINDOW, flag: boolean): number => ll.meta(win, Number(flag)),
   derwinAt: (win: WINDOW, y: number, x: number): number => ll.mvderwin(win, y, x),
   addCharAt: (a1: WINDOW, a2: number, a3: number, z: number): number => ll.mvwaddch(a1, a2, a3, z),
-  addCharCodesWithSizeAt: (a1: WINDOW, a2: number, a3: number, a4: number[], z: number): number => ll.mvwaddchnstr(a1, a2, a3, new Uint8Array(a4), z),
+  addCharCodesWithLengthAt: (a1: WINDOW, a2: number, a3: number, a4: number[], z: number): number => ll.mvwaddchnstr(a1, a2, a3, new Uint8Array(a4), z),
   addCharCodesAt: (a1: WINDOW, a2: number, a3: number, z: number[]): number => ll.mvwaddchstr(a1, a2, a3, new Uint8Array(z)),
-  addStringWithSizeAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwaddnstr(a1, a2, a3, cstring(a4), z),
+  addStringWithLengthAt: (win: WINDOW, str: string, x: number, y: number, length: number): number => ll.mvwaddnstr(win, y, x, cstring(str), length),
   addStringAt: (a1: WINDOW, a2: number, a3: number, z: string): number => ll.mvwaddstr(a1, a2, a3, cstring(z)),
   changeAttributeAt: (a1: WINDOW, a2: number, a3: number, a4: number, a5: number, a6: number, z: any): number => ll.mvwchgat(a1, a2, a3, a4, a5, a6, z),
   deleteCharAt: (a1: WINDOW, a2: number, z: number): number => ll.mvwdelch(a1, a2, z),
-  getInputCharAt: (a1: WINDOW, a2: number, z: number): number => ll.mvwgetch(a1, a2, z),
-  getInputStringWithSizeAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwgetnstr(a1, a2, a3, cstring(a4), z),
-  getInputStringAt: (a1: WINDOW, a2: number, a3: number, z: string): number => ll.mvwgetstr(a1, a2, a3, cstring(z)),
+  readInputCharAt: (a1: WINDOW, a2: number, z: number): number => ll.mvwgetch(a1, a2, z),
+  readInputStringWithLengthAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwgetnstr(a1, a2, a3, cstring(a4), z),
+  readInputStringAt: (a1: WINDOW, a2: number, a3: number, z: string): number => ll.mvwgetstr(a1, a2, a3, cstring(z)),
   hlineAt: (a1: WINDOW, a2: number, a3: number, a4: number, z: number): number => ll.mvwhline(a1, a2, a3, a4, z),
   inAt: (win: WINDOW, by: number, bx: number): number => ll.mvwin(win, by, bx),
   inchAt: (a1: WINDOW, a2: number, z: number): number => ll.mvwinch(a1, a2, z),
-  getCharCodesWithSizeAt: (a1: WINDOW, a2: number, a3: number, a4: number[], z: number): number => ll.mvwinchnstr(a1, a2, a3, new Uint8Array(a4), z),
+  getCharCodesWithLengthAt: (a1: WINDOW, a2: number, a3: number, a4: number[], z: number): number => ll.mvwinchnstr(a1, a2, a3, new Uint8Array(a4), z),
   getCharCodesAt: (a1: WINDOW, a2: number, a3: number, z: number[]): number => ll.mvwinchstr(a1, a2, a3, new Uint8Array(z)),
-  getStringWithSizeAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwinnstr(a1, a2, a3, cstring(a4), z),
+  getStringWithLengthAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwinnstr(a1, a2, a3, cstring(a4), z),
   insertCharAt: (a1: WINDOW, a2: number, a3: number, z: number): number => ll.mvwinsch(a1, a2, a3, z),
-  insertStringWithSizeAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwinsnstr(a1, a2, a3, cstring(a4), z),
+  insertStringWithLengthAt: (a1: WINDOW, a2: number, a3: number, a4: string, z: number): number => ll.mvwinsnstr(a1, a2, a3, cstring(a4), z),
   insertStringAt: (a1: WINDOW, a2: number, a3: number, z: string): number => ll.mvwinsstr(a1, a2, a3, cstring(z)),
   getStringAt: (a1: WINDOW, a2: number, a3: number, z: string): number => ll.mvwinstr(a1, a2, a3, cstring(z)),
   vlineAt: (a1: WINDOW, a2: number, a3: number, a4: number, z: number): number => ll.mvwvline(a1, a2, a3, a4, z),
@@ -291,14 +298,14 @@ export const window = {
   vwscanw: (win: WINDOW, fmt: string, argp: any): number => ll.vwscanw(win, cstring(fmt), argp),
   vw_scanw: (a1: WINDOW, a2: string, z: any): number => ll.vw_scanw(a1, cstring(a2), z),
   addChar: (win: WINDOW, ch: number): number => ll.waddch(win, ch),
-  addCharCodesWithSize: (win: WINDOW, astr: number[], n: number): number => ll.waddchnstr(win, new Uint8Array(astr), n),
+  addCharCodesWithLength: (win: WINDOW, astr: number[], n: number): number => ll.waddchnstr(win, new Uint8Array(astr), n),
   addCharCodes: (a1: WINDOW, z: number[]): number => ll.waddchstr(a1, new Uint8Array(z)),
-  addStringWithSize: (win: WINDOW, astr: string, n: number): number => ll.waddnstr(win, cstring(astr), n),
+  addStringWithLength: (win: WINDOW, astr: string, n: number): number => ll.waddnstr(win, cstring(astr), n),
   addString: (a1: WINDOW, z: string): number => ll.waddstr(a1, cstring(z)),
   enableAttribute: (a1: WINDOW, z: number): number => ll.wattron(a1, z),
   disableAttribute: (a1: WINDOW, z: number): number => ll.wattroff(a1, z),
   setAttribute: (a1: WINDOW, z: number): number => ll.wattrset(a1, z),
-  attr_getInput: (a1: WINDOW, a2: number, a3: number, z: any): number => ll.wattr_get(a1, a2, a3, z),
+  attr_readInput: (a1: WINDOW, a2: number, a3: number, z: any): number => ll.wattr_get(a1, a2, a3, z),
   attr_on: (win: WINDOW, at: number, opts: any): number => ll.wattr_on(win, at, opts),
   attr_off: (win: WINDOW, at: number, opts: any): number => ll.wattr_off(win, at, opts),
   attr_set: (a1: WINDOW, a2: number, a3: number, z: any): number => ll.wattr_set(a1, a2, a3, z),
@@ -325,18 +332,18 @@ export const window = {
   deleteLine: (z: WINDOW): number => ll.wdeleteln(z),
   echoChar: (win: WINDOW, ch: number): number => ll.wechochar(win, ch),
   erase: (win: WINDOW): number => ll.werase(win),
-  getInputChar: (win: WINDOW): number => ll.wgetch(win),
-  getInputStringWithSize: (win: WINDOW, str: string, maxlen: number): number => ll.wgetnstr(win, cstring(str), maxlen),
-  getInputString: (a1: WINDOW, z: string): number => ll.wgetstr(a1, cstring(z)),
+  readInputChar: (win: WINDOW): number => ll.wgetch(win),
+  readInputStringWithLength: (win: WINDOW, str: string, maxlen: number): number => ll.wgetnstr(win, cstring(str), maxlen),
+  readInputString: (a1: WINDOW, z: string): number => ll.wgetstr(a1, cstring(z)),
   hline: (win: WINDOW, ch: number, n: number): number => ll.whline(win, ch, n),
   getChar: (win: WINDOW): number => ll.winch(win),
-  getCharCodesWithSize: (win: WINDOW, str: number[], n: number): number => ll.winchnstr(win, new Uint8Array(str), n),
+  getCharCodesWithLength: (win: WINDOW, str: number[], n: number): number => ll.winchnstr(win, new Uint8Array(str), n),
   getCharCodes: (a1: WINDOW, z: number[]): number => ll.winchstr(a1, new Uint8Array(z)),
-  getStringWithSize: (win: WINDOW, str: string, n: number): number => ll.winnstr(win, cstring(str), n),
+  getStringWithLength: (win: WINDOW, str: string, n: number): number => ll.winnstr(win, cstring(str), n),
   insertChar: (win: WINDOW, c: number): number => ll.winsch(win, c),
   insertDeleteLine: (win: WINDOW, n: number): number => ll.winsdelln(win, n),
   insertLine: (z: WINDOW): number => ll.winsertln(z),
-  insertStringWithSize: (win: WINDOW, s: string, n: number): number => ll.winsnstr(win, cstring(s), n),
+  insertStringWithLength: (win: WINDOW, s: string, n: number): number => ll.winsnstr(win, cstring(s), n),
   insertString: (a1: WINDOW, z: string): number => ll.winsstr(a1, cstring(z)),
   getString: (a1: WINDOW, z: string): number => ll.winstr(a1, cstring(z)),
   move: (win: WINDOW, y: number, x: number): number => ll.wmove(win, y, x),

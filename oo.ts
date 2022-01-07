@@ -1,6 +1,6 @@
 import * as hl from './hl.ts';
 import { WINDOW, SCREEN, FILE } from './ll.ts';
-import { Border, Corner } from './hl.ts';
+import { Border, Corner, StringOptions } from './hl.ts';
 
 class Base {
   ptr: WINDOW;
@@ -64,17 +64,11 @@ class Base {
   addCharAt(a2: number, a3: number, z: number): number {
     return hl.window.addCharAt(this.ptr, a2, a3, z);
   }
-  addCharCodesWithSizeAt(a2: number, a3: number, a4: number[], z: number): number {
-    return hl.window.addCharCodesWithSizeAt(this.ptr, a2, a3, a4, z);
+  addCharCodesWithLengthAt(a2: number, a3: number, a4: number[], z: number): number {
+    return hl.window.addCharCodesWithLengthAt(this.ptr, a2, a3, a4, z);
   }
   addCharCodesAt(a2: number, a3: number, z: number[]): number {
     return hl.window.addCharCodesAt(this.ptr, a2, a3, z);
-  }
-  addStringWithSizeAt(a2: number, a3: number, a4: string, z: number): number {
-    return hl.window.addStringWithSizeAt(this.ptr, a2, a3, a4, z);
-  }
-  addStringAt(a2: number, a3: number, z: string): number {
-    return hl.window.addStringAt(this.ptr, a2, a3, z);
   }
   changeAttributeAt(a2: number, a3: number, a4: number, a5: number, a6: number, z: any): number {
     return hl.window.changeAttributeAt(this.ptr, a2, a3, a4, a5, a6, z);
@@ -82,14 +76,14 @@ class Base {
   deleteCharAt(a2: number, z: number): number {
     return hl.window.deleteCharAt(this.ptr, a2, z);
   }
-  getInputCharAt(a2: number, z: number): number {
-    return hl.window.getInputCharAt(this.ptr, a2, z);
+  readInputCharAt(a2: number, z: number): number {
+    return hl.window.readInputCharAt(this.ptr, a2, z);
   }
-  getInputStringWithSizeAt(a2: number, a3: number, a4: string, z: number): number {
-    return hl.window.getInputStringWithSizeAt(this.ptr, a2, a3, a4, z);
+  readInputStringWithLengthAt(a2: number, a3: number, a4: string, z: number): number {
+    return hl.window.readInputStringWithLengthAt(this.ptr, a2, a3, a4, z);
   }
-  getInputStringAt(a2: number, a3: number, z: string): number {
-    return hl.window.getInputStringAt(this.ptr, a2, a3, z);
+  readInputStringAt(a2: number, a3: number, z: string): number {
+    return hl.window.readInputStringAt(this.ptr, a2, a3, z);
   }
   hlineAt(a2: number, a3: number, a4: number, z: number): number {
     return hl.window.hlineAt(this.ptr, a2, a3, a4, z);
@@ -100,20 +94,20 @@ class Base {
   inchAt(a2: number, z: number): number {
     return hl.window.inchAt(this.ptr, a2, z);
   }
-  getCharCodesWithSizeAt(a2: number, a3: number, a4: number[], z: number): number {
-    return hl.window.getCharCodesWithSizeAt(this.ptr, a2, a3, a4, z);
+  getCharCodesWithLengthAt(a2: number, a3: number, a4: number[], z: number): number {
+    return hl.window.getCharCodesWithLengthAt(this.ptr, a2, a3, a4, z);
   }
   getCharCodesAt(a2: number, a3: number, z: number[]): number {
     return hl.window.getCharCodesAt(this.ptr, a2, a3, z);
   }
-  getStringWithSizeAt(a2: number, a3: number, a4: string, z: number): number {
-    return hl.window.getStringWithSizeAt(this.ptr, a2, a3, a4, z);
+  getStringWithLengthAt(a2: number, a3: number, a4: string, z: number): number {
+    return hl.window.getStringWithLengthAt(this.ptr, a2, a3, a4, z);
   }
   insertCharAt(a2: number, a3: number, z: number): number {
     return hl.window.insertCharAt(this.ptr, a2, a3, z);
   }
-  insertStringWithSizeAt(a2: number, a3: number, a4: string, z: number): number {
-    return hl.window.insertStringWithSizeAt(this.ptr, a2, a3, a4, z);
+  insertStringWithLengthAt(a2: number, a3: number, a4: string, z: number): number {
+    return hl.window.insertStringWithLengthAt(this.ptr, a2, a3, a4, z);
   }
   insertStringAt(a2: number, a3: number, z: string): number {
     return hl.window.insertStringAt(this.ptr, a2, a3, z);
@@ -190,17 +184,14 @@ class Base {
   addChar(ch: number): number {
     return hl.window.addChar(this.ptr, ch);
   }
-  addCharCodesWithSize(astr: number[], n: number): number {
-    return hl.window.addCharCodesWithSize(this.ptr, astr, n);
+  addCharCodesWithLength(astr: number[], n: number): number {
+    return hl.window.addCharCodesWithLength(this.ptr, astr, n);
   }
   addCharCodes(z: number[]): number {
     return hl.window.addCharCodes(this.ptr, z);
   }
-  addStringWithSize(astr: string, n: number): number {
-    return hl.window.addStringWithSize(this.ptr, astr, n);
-  }
-  addString(z: string): number {
-    return hl.window.addString(this.ptr, z);
+  addString(str: string, options?: StringOptions): number {
+    return hl.window.addStringWithLengthAt(this.ptr, str, options?.x ?? 0, options?.y ?? 0, options?.length ?? str.length);
   }
   enableAttribute(z: number): number {
     return hl.window.enableAttribute(this.ptr, z);
@@ -211,8 +202,8 @@ class Base {
   setAttribute(z: number): number {
     return hl.window.setAttribute(this.ptr, z);
   }
-  attr_getInput(a2: number, a3: number, z: any): number {
-    return hl.window.attr_getInput(this.ptr, a2, a3, z);
+  attr_readInput(a2: number, a3: number, z: any): number {
+    return hl.window.attr_readInput(this.ptr, a2, a3, z);
   }
   attr_on(at: number, opts: any): number {
     return hl.window.attr_on(this.ptr, at, opts);
@@ -262,14 +253,14 @@ class Base {
   erase(): number {
     return hl.window.erase(this.ptr);
   }
-  getInputChar(): number {
-    return hl.window.getInputChar(this.ptr);
+  readInputChar(): number {
+    return hl.window.readInputChar(this.ptr);
   }
-  getInputStringWithSize(str: string, maxlen: number): number {
-    return hl.window.getInputStringWithSize(this.ptr, str, maxlen);
+  readInputStringWithLength(str: string, maxlen: number): number {
+    return hl.window.readInputStringWithLength(this.ptr, str, maxlen);
   }
-  getInputString(z: string): number {
-    return hl.window.getInputString(this.ptr, z);
+  readInputString(z: string): number {
+    return hl.window.readInputString(this.ptr, z);
   }
   hline(ch: number, n: number): number {
     return hl.window.hline(this.ptr, ch, n);
@@ -277,14 +268,14 @@ class Base {
   getChar(): number {
     return hl.window.getChar(this.ptr);
   }
-  getCharCodesWithSize(str: number[], n: number): number {
-    return hl.window.getCharCodesWithSize(this.ptr, str, n);
+  getCharCodesWithLength(str: number[], n: number): number {
+    return hl.window.getCharCodesWithLength(this.ptr, str, n);
   }
   getCharCodes(z: number[]): number {
     return hl.window.getCharCodes(this.ptr, z);
   }
-  getStringWithSize(str: string, n: number): number {
-    return hl.window.getStringWithSize(this.ptr, str, n);
+  getStringWithLength(str: string, n: number): number {
+    return hl.window.getStringWithLength(this.ptr, str, n);
   }
   insertChar(c: number): number {
     return hl.window.insertChar(this.ptr, c);
@@ -295,8 +286,8 @@ class Base {
   insertLine(): number {
     return hl.window.insertLine(this.ptr);
   }
-  insertStringWithSize(s: string, n: number): number {
-    return hl.window.insertStringWithSize(this.ptr, s, n);
+  insertStringWithLength(s: string, n: number): number {
+    return hl.window.insertStringWithLength(this.ptr, s, n);
   }
   insertString(z: string): number {
     return hl.window.insertString(this.ptr, z);

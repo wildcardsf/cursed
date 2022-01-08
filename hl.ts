@@ -1,46 +1,6 @@
 import * as ll from './ll.ts'
 import { WINDOW, SCREEN, FILE, MEVENT } from './ll.ts'
-
-const cstring = (str: string) => new Uint8Array([...(Deno as any).core.encode(str), 0]);
-
-export type Border = {
-  left?: 'string',
-  right?: 'string',
-  top?: 'string',
-  bottom?: 'string',
-}
-
-export type Corner = {
-  topLeft?: 'string',
-  topRight?: 'string',
-  bottomLeft?: 'string',
-  bottomRight?: 'string',
-}
-
-enum Color {
-  black,
-  red,
-  green,
-  yellow,
-  blue,
-  magenta,
-  cyan,
-  white,
-  brightBlack,
-  brightRed,
-  brightGreen,
-  brightYellow,
-  brightBlue,
-  brightMagenta,
-  brightCyan,
-  brightWhite,
-}
-
-export type StringOptions = {
-  x?: number,
-  y?: number,
-  length?: number,
-}
+import { cstring } from './helpers.ts';
 
 export const addChar = (char: string): number => ll.addch(char.charCodeAt(0));
 export const addCharCode = (char: number): number => ll.addch(char);
@@ -59,15 +19,15 @@ export const baudrate = (): number => ll.baudrate();
 export const beep = (): number => ll.beep();
 export const background = (z: number): number => ll.bkgd(z);
 export const setBackground = (z: number): any => ll.bkgdset(z);
-export const border = (border?: Border, corner?: Corner) => ll.border(
-  border?.left?.charCodeAt(0) ?? 0,
-  border?.right?.charCodeAt(0) ?? 0,
-  border?.top?.charCodeAt(0) ?? 0,
-  border?.bottom?.charCodeAt(0) ?? 0,
-  corner?.topLeft?.charCodeAt(0) ?? 0,
-  corner?.topRight?.charCodeAt(0) ?? 0,
-  corner?.bottomLeft?.charCodeAt(0) ?? 0,
-  corner?.bottomRight?.charCodeAt(0) ?? 0,
+export const border = (left: number, right: number, top: number, bottom: number, topLeft: number, topRight: number, bottomLeft: number, bottomRight: number) => ll.border(
+  left,
+  right,
+  top,
+  bottom,
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight,
 );
 export const canChangeColor = (): boolean => ll.can_change_color() > -1;
 export const cbreak = (): number => ll.cbreak();
@@ -93,7 +53,8 @@ export const eraseChar = (): string => String.fromCharCode(ll.erasechar());
 export const filter = (): any => ll.filter();
 export const flash = (): number => ll.flash();
 export const flushinp = (): number => ll.flushinp();
-export const readInputChar = (): number => ll.getch();
+export const readInputChar = (): string => String.fromCharCode(ll.getch());
+export const readInputCharCode = (): number => ll.getch();
 export const readInputStringWithLength = (a1: string, z: number): number => ll.getnstr(cstring(a1), z);
 export const readInputString = (z: string): number => ll.getstr(cstring(z));
 export const getWindow = (filep: FILE): WINDOW => ll.getwin(filep);
@@ -106,8 +67,8 @@ export const char = (): number => ll.inch();
 export const getCharCodesWithLength = (a1: number[], z: number): number => ll.inchnstr(new Uint8Array(a1), z);
 export const getCharCodes = (z: number[]): number => ll.inchstr(new Uint8Array(z));
 export const initScreen = (): WINDOW => ll.initscr();
-export const init_color = (color: number, r: number, g: number, b: number): number => ll.init_color(color, r, g, b);
-export const init_pair = (pair: number, f: number, b: number): number => ll.init_pair(pair, f, b);
+export const initColor = (color: number, r: number, g: number, b: number): number => ll.init_color(color, r, g, b);
+export const initPair = (pair: number, fg: number, bg: number): number => ll.init_pair(pair, fg, bg);
 export const getStringWithLength = (a1: string, z: number): number => ll.innstr(cstring(a1), z);
 export const insertChar = (z: number): number => ll.insch(z);
 export const insertDeleteLine = (z: number): number => ll.insdelln(z);
@@ -186,7 +147,7 @@ export const slk_restore = (): number => ll.slk_restore();
 export const slk_set = (i: number, astr: string, format: number): number => ll.slk_set(i, cstring(astr), format);
 export const slk_touch = (): number => ll.slk_touch();
 export const standout = (): number => ll.standout();
-export const standend = (): number => ll.standend();
+export const normal = (): number => ll.standend();
 export const startColor = (): number => ll.start_color();
 export const termattrs = (): number => ll.termattrs();
 export const termname = (): string => ll.termname().getCString();
@@ -311,16 +272,16 @@ export const window = {
   attr_set: (a1: WINDOW, a2: number, a3: number, z: any): number => ll.wattr_set(a1, a2, a3, z),
   background: (win: WINDOW, ch: number): number => ll.wbkgd(win, ch),
   setBackground: (win: WINDOW, ch: number): any => ll.wbkgdset(win, ch),
-  border: (win: WINDOW, border?: Border, corner?: Corner) => ll.wborder(
+  border: (win: WINDOW, left: number, right: number, top: number, bottom: number, topLeft: number, topRight: number, bottomLeft: number, bottomRight: number) => ll.wborder(
     win,
-    border?.left?.charCodeAt(0) ?? 0,
-    border?.right?.charCodeAt(0) ?? 0,
-    border?.top?.charCodeAt(0) ?? 0,
-    border?.bottom?.charCodeAt(0) ?? 0,
-    corner?.topLeft?.charCodeAt(0) ?? 0,
-    corner?.topRight?.charCodeAt(0) ?? 0,
-    corner?.bottomLeft?.charCodeAt(0) ?? 0,
-    corner?.bottomRight?.charCodeAt(0) ?? 0,
+    left,
+    right,
+    top,
+    bottom,
+    topLeft,
+    topRight,
+    bottomLeft,
+    bottomRight,
   ),
   changeAttribute: (win: WINDOW, n: number, attr: number, color: number, opts: any): number => ll.wchgat(win, n, attr, color, opts),
   clear: (win: WINDOW): number => ll.wclear(win),
@@ -332,7 +293,8 @@ export const window = {
   deleteLine: (z: WINDOW): number => ll.wdeleteln(z),
   echoChar: (win: WINDOW, ch: number): number => ll.wechochar(win, ch),
   erase: (win: WINDOW): number => ll.werase(win),
-  readInputChar: (win: WINDOW): number => ll.wgetch(win),
+  readInputChar: (win: WINDOW): string => String.fromCharCode(ll.wgetch(win)),
+  readInputCharCode: (win: WINDOW): number => ll.wgetch(win),
   readInputStringWithLength: (win: WINDOW, str: string, maxlen: number): number => ll.wgetnstr(win, cstring(str), maxlen),
   readInputString: (a1: WINDOW, z: string): number => ll.wgetstr(a1, cstring(z)),
   hline: (win: WINDOW, ch: number, n: number): number => ll.whline(win, ch, n),
@@ -353,7 +315,7 @@ export const window = {
   scrollBy: (win: WINDOW, n: number): number => ll.wscrl(win, n),
   setScreenMargins: (win: WINDOW, top: number, bottom: number): number => ll.wsetscrreg(win, top, bottom),
   standOut: (z: WINDOW): number => ll.wstandout(z),
-  standEnd: (z: WINDOW): number => ll.wstandend(z),
+  normal: (z: WINDOW): number => ll.wstandend(z),
   syncDown: (win: WINDOW): any => ll.wsyncdown(win),
   syncUp: (win: WINDOW): any => ll.wsyncup(win),
   timeout: (win: WINDOW, delay: number): any => ll.wtimeout(win, delay),

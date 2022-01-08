@@ -1,6 +1,26 @@
 import * as hl from './hl.ts';
 import { WINDOW, SCREEN, FILE } from './ll.ts';
-import { Border, Corner, StringOptions } from './hl.ts';
+import * as helpers from './helpers.ts';
+
+export type Border = {
+  left?: 'string',
+  right?: 'string',
+  top?: 'string',
+  bottom?: 'string',
+}
+
+export type Corner = {
+  topLeft?: 'string',
+  topRight?: 'string',
+  bottomLeft?: 'string',
+  bottomRight?: 'string',
+}
+
+export type StringOptions = {
+  x?: number,
+  y?: number,
+  length?: number,
+}
 
 class Base {
   ptr: WINDOW;
@@ -221,7 +241,17 @@ class Base {
     return hl.window.setBackground(this.ptr, ch);
   }
   border(border?: Border, corner?: Corner) {
-    return hl.window.border(this.ptr, border, corner);
+    return hl.window.border(
+      this.ptr,
+      border?.left?.charCodeAt(0) ?? 0,
+      border?.right?.charCodeAt(0) ?? 0,
+      border?.top?.charCodeAt(0) ?? 0,
+      border?.bottom?.charCodeAt(0) ?? 0,
+      corner?.topLeft?.charCodeAt(0) ?? 0,
+      corner?.topRight?.charCodeAt(0) ?? 0,
+      corner?.bottomLeft?.charCodeAt(0) ?? 0,
+      corner?.bottomRight?.charCodeAt(0) ?? 0,
+    );
   }
   changeAttribute(n: number, attr: number, color: number, opts: any): number {
     return hl.window.changeAttribute(this.ptr, n, attr, color, opts);
@@ -253,8 +283,11 @@ class Base {
   erase(): number {
     return hl.window.erase(this.ptr);
   }
-  readInputChar(): number {
+  readInputChar(): string {
     return hl.window.readInputChar(this.ptr);
+  }
+  readInputCharCode(): number {
+    return hl.window.readInputCharCode(this.ptr);
   }
   readInputStringWithLength(str: string, maxlen: number): number {
     return hl.window.readInputStringWithLength(this.ptr, str, maxlen);
@@ -316,8 +349,8 @@ class Base {
   standOut(): number {
     return hl.window.standOut(this.ptr);
   }
-  standEnd(): number {
-    return hl.window.standEnd(this.ptr);
+  normal(): number {
+    return hl.window.normal(this.ptr);
   }
   syncDown(): any {
     return hl.window.syncDown(this.ptr);
@@ -411,14 +444,130 @@ class Base {
   }
 }
 
+export enum Color {
+  default = -1,
+  black,
+  red,
+  green,
+  yellow,
+  blue,
+  magenta,
+  cyan,
+  white,
+  gray,
+  brightRed,
+  brightGreen,
+  brightYellow,
+  brightBlue,
+  brightMagenta,
+  brightCyan,
+  brightWhite,
+}
+
+export enum Effect {
+  standout = 8,
+  underline,
+  reverse,
+  blink,
+  dim,
+  bold,
+  altCharSet,
+  invisible,
+  protect,
+  horizontal,
+  left,
+  low,
+  right,
+  top,
+  vertical,
+}
+
+class ColorState {
+  static instance?: ColorState;
+  constructor() {
+    if (!ColorState.instance) {
+      ColorState.instance = this;
+    }
+    return ColorState.instance;
+  }
+  didStart = false;
+  index = 1;
+  pairs: {[fg: number]: {[bg: number]: number}} = {};
+  addPair(fg: number, bg: number = Color.default): number {
+    if (this.pairs[fg] === undefined) {
+      this.pairs[fg] = {};
+    }
+    if (this.pairs[fg][bg] === undefined) {
+      hl.initPair(this.index, fg, bg);
+      this.pairs[fg][bg] = this.index;
+      this.index += 1;
+    }
+    return this.pairs[fg][bg];
+  }
+  hasPair(fg: number, bg: number = Color.default): boolean {
+    return this.pairs[fg] !== undefined && this.pairs[fg][bg] !== undefined;
+  }
+  getPair(fg: number, bg: number = Color.default): number {
+    return this.pairs[fg][bg];
+  }
+  start() {
+    if (hl.hasColors()) {
+      hl.startColor();
+      hl.useDefaultColors();
+      this.didStart = true;
+    }
+  }
+  setColors = (fg: number, bg: number = Color.default) => {
+    const pair = this.hasPair(fg, bg)
+      ? this.getPair(fg, bg)
+      : this.addPair(fg, bg);
+    hl.setAttribute(helpers.colorPair(pair));
+  }
+  black = () => this.setColors(Color.black);
+  red = () => this.setColors(Color.red);
+  green = () => this.setColors(Color.green);
+  yellow = () => this.setColors(Color.yellow);
+  blue = () => this.setColors(Color.blue);
+  magenta = () => this.setColors(Color.magenta);
+  cyan = () => this.setColors(Color.cyan);
+  white = () => this.setColors(Color.white);
+  gray = () => this.setColors(Color.gray);
+  brightRed = () => this.setColors(Color.brightRed);
+  brightGreen = () => this.setColors(Color.brightGreen);
+  brightYellow = () => this.setColors(Color.brightYellow);
+  brightBlue = () => this.setColors(Color.brightBlue);
+  brightMagenta = () => this.setColors(Color.brightMagenta);
+  brightCyan = () => this.setColors(Color.brightCyan);
+  brightWhite = () => this.setColors(Color.brightWhite);
+  standout = () => hl.enableAttribute(helpers.shift(1, Effect.standout));
+  underline = () => hl.enableAttribute(helpers.shift(1, Effect.underline));
+  reverse = () => hl.enableAttribute(helpers.shift(1, Effect.reverse));
+  blink = () => hl.enableAttribute(helpers.shift(1, Effect.blink));
+  dim = () => hl.enableAttribute(helpers.shift(1, Effect.dim));
+  bold = () => hl.enableAttribute(helpers.shift(1, Effect.bold));
+  altCharSet = () => hl.enableAttribute(helpers.shift(1, Effect.altCharSet));
+  invisible = () => hl.enableAttribute(helpers.shift(1, Effect.invisible));
+  protect = () => hl.enableAttribute(helpers.shift(1, Effect.protect));
+  horizontal = () => hl.enableAttribute(helpers.shift(1, Effect.horizontal));
+  left = () => hl.enableAttribute(helpers.shift(1, Effect.left));
+  low = () => hl.enableAttribute(helpers.shift(1, Effect.low));
+  right = () => hl.enableAttribute(helpers.shift(1, Effect.right));
+  top = () => hl.enableAttribute(helpers.shift(1, Effect.top));
+  vertical = () => hl.enableAttribute(helpers.shift(1, Effect.vertical));
+}
+
+export const color = new ColorState();
+
 export class Window extends Base {
   constructor(x: number, y: number, lines: number, columns: number) {
     super(hl.newWindow(x, y, lines, columns));
+    if (!ColorState.instance?.didStart) ColorState.instance?.start();
   }
 }
 
 export class Screen extends Base {
   constructor() {
     super(hl.initScreen());
+    if (!ColorState.instance?.didStart) ColorState.instance?.start();
   }
 }

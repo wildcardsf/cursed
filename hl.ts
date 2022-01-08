@@ -80,7 +80,7 @@ export const didEnd = (): boolean => ll.isendwin() > -1;
 export const keyName = (c: number): string => ll.keyname(c).getCString();
 export const killChar = (): string => String.fromCharCode(ll.killchar());
 export const longName = (): string => ll.longname().getCString();
-export const move = (a1: number, z: number): number => ll.move(a1, z);
+export const moveCursor = (x: number, y: number): number => ll.move(y, x);
 export const addCharAt = (a1: number, a2: number, z: number): number => ll.mvaddch(a1, a2, z);
 export const addCharCodesWithLengthAt = (a1: number, a2: number, a3: number[], z: number): number => ll.mvaddchnstr(a1, a2, new Uint8Array(a3), z);
 export const addCharCodesAt = (a1: number, a2: number, z: number[]): number => ll.mvaddchstr(a1, a2, new Uint8Array(z));
@@ -308,7 +308,7 @@ export const window = {
   insertStringWithLength: (win: WINDOW, s: string, n: number): number => ll.winsnstr(win, cstring(s), n),
   insertString: (a1: WINDOW, z: string): number => ll.winsstr(a1, cstring(z)),
   getString: (a1: WINDOW, z: string): number => ll.winstr(a1, cstring(z)),
-  move: (win: WINDOW, y: number, x: number): number => ll.wmove(win, y, x),
+  moveCursor: (win: WINDOW, x: number, y: number): number => ll.wmove(win, y, x),
   noutrefresh: (win: WINDOW): number => ll.wnoutrefresh(win),
   redrawLine: (win: WINDOW, beg: number, num: number): number => ll.wredrawln(win, beg, num),
   refresh: (win: WINDOW): number => ll.wrefresh(win),
@@ -326,8 +326,8 @@ export const window = {
   getCury: (z: WINDOW): number => ll.getcury(z),
   getBegx: (z: WINDOW): number => ll.getbegx(z),
   getBegy: (z: WINDOW): number => ll.getbegy(z),
-  getMaxx: (z: WINDOW): number => ll.getmaxx(z),
-  getMaxy: (z: WINDOW): number => ll.getmaxy(z),
+  getWidth: (z: WINDOW): number => ll.getmaxx(z),
+  getHeight: (z: WINDOW): number => ll.getmaxy(z),
   getParx: (z: WINDOW): number => ll.getparx(z),
   getPary: (z: WINDOW): number => ll.getpary(z),
   use_window: (win: WINDOW, func: any, data: any): number => ll.use_window(win, func, data),

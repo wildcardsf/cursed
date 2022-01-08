@@ -328,8 +328,8 @@ class Base {
   getString(z: string): number {
     return hl.window.getString(this.ptr, z);
   }
-  move(y: number, x: number): number {
-    return hl.window.move(this.ptr, y, x);
+  moveCursor(x: number, y: number): number {
+    return hl.window.moveCursor(this.ptr, x, y);
   }
   noutrefresh(): number {
     return hl.window.noutrefresh(this.ptr);
@@ -382,11 +382,11 @@ class Base {
   getBegy(): number {
     return hl.window.getBegy(this.ptr);
   }
-  getMaxx(): number {
-    return hl.window.getMaxx(this.ptr);
+  getWidth(): number {
+    return hl.window.getWidth(this.ptr);
   }
-  getMaxy(): number {
-    return hl.window.getMaxy(this.ptr);
+  getHeight(): number {
+    return hl.window.getHeight(this.ptr);
   }
   getParx(): number {
     return hl.window.getParx(this.ptr);

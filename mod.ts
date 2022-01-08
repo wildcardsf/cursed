@@ -1,2 +1,2 @@
-export * from './hl.ts'
-export * from './oo.ts'
+export * from './src/hl.ts'
+export * from './src/oo.ts'

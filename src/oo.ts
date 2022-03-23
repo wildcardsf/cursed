@@ -213,11 +213,11 @@ class Base {
   addString(str: string, options?: StringOptions): number {
     return hl.window.addStringWithLengthAt(this.ptr, str, options?.x ?? 0, options?.y ?? 0, options?.length ?? str.length);
   }
-  enableAttribute(z: number): number {
-    return hl.window.enableAttribute(this.ptr, z);
+  addAttribute(z: number): number {
+    return hl.window.addAttribute(this.ptr, z);
   }
-  disableAttribute(z: number): number {
-    return hl.window.disableAttribute(this.ptr, z);
+  removeAttribute(z: number): number {
+    return hl.window.removeAttribute(this.ptr, z);
   }
   setAttribute(z: number): number {
     return hl.window.setAttribute(this.ptr, z);

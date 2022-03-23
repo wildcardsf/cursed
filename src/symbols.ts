@@ -1119,23 +1119,9 @@ const symbols = <Record<string, Deno.ForeignFunction>> {
     ],
     "result": "i32"
   },
-  "slk_attr_off": {
-    "parameters": [
-      "u32",
-      "pointer"
-    ],
-    "result": "i32"
-  },
   "slk_attron": {
     "parameters": [
       "u32"
-    ],
-    "result": "i32"
-  },
-  "slk_attr_on": {
-    "parameters": [
-      "u32",
-      "pointer"
     ],
     "result": "i32"
   },

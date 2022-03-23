@@ -106,7 +106,7 @@ export const vlineAt = (a1: number, a2: number, a3: number, z: number): number =
 export const napms = (ms: number): number => ll.napms(ms);
 export const newPad = (l: number, c: number): WINDOW => ll.newpad(l, c);
 export const newTerm = (name: string, ofp: FILE, ifp: FILE): SCREEN => ll.newterm(cstring(name), ofp, ifp);
-export const newWindow = (num_lines: number, num_columns: number, begy: number, begx: number): WINDOW => ll.newwin(num_lines, num_columns, begy, begx);
+export const newWindow = (x: number, y: number, lines: number, columns: number): WINDOW => ll.newwin(lines, columns, y, x);
 export const nl = (): number => ll.nl();
 export const noCbreak = (): number => ll.nocbreak();
 export const noEcho = (): number => ll.noecho();
@@ -263,8 +263,8 @@ export const window = {
   addCharCodes: (a1: WINDOW, z: number[]): number => ll.waddchstr(a1, new Uint8Array(z)),
   addStringWithLength: (win: WINDOW, astr: string, n: number): number => ll.waddnstr(win, cstring(astr), n),
   addString: (a1: WINDOW, z: string): number => ll.waddstr(a1, cstring(z)),
-  enableAttribute: (a1: WINDOW, z: number): number => ll.wattron(a1, z),
-  disableAttribute: (a1: WINDOW, z: number): number => ll.wattroff(a1, z),
+  addAttribute: (a1: WINDOW, z: number): number => ll.wattron(a1, z),
+  removeAttribute: (a1: WINDOW, z: number): number => ll.wattroff(a1, z),
   setAttribute: (a1: WINDOW, z: number): number => ll.wattrset(a1, z),
   attr_readInput: (a1: WINDOW, a2: number, a3: number, z: any): number => ll.wattr_get(a1, a2, a3, z),
   attr_on: (win: WINDOW, at: number, opts: any): number => ll.wattr_on(win, at, opts),

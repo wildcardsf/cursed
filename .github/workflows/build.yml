@@ -1,0 +1,27 @@
+name: Deno
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run tests
+        env:
+          TERM: linux
+        run: deno test -A --unstable
+
+      # - name: Verify formatting
+      #   run: deno fmt --check
+
+      # - name: Run linter
+      #   run: deno lint
